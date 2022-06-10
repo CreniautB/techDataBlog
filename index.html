@@ -1,0 +1,428 @@
+<link
+  href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  .espaceBlog {
+    width: 1280px;
+    margin: auto;
+    font-family: "Work Sans";
+    overflow: hidden;
+  }
+  .titleh2 {
+    background-color: #21314d;
+    color: white;
+    display: inline-block;
+    padding: 0.3em 1.9em 0.3em 0.4em;
+    margin: 1.7em 0 0.7em 0;
+    border-radius: 0.1em;
+    font-weight: 500;
+    font-size: 18px;
+  }
+  .menuEspaceBlogLi {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+  }
+  .menuEspaceBlogLi > .themeatiqueMenuLi {
+    font-size: 20px;
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-weight: 700;
+    color: #21314d;
+    width: 10%;
+    text-align: center;
+  }
+  .themeatiqueMenuLi > img {
+    width: 60px;
+    margin: 0.5em auto;
+  }
+
+  .articleRecentContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .artcileRecentContainer {
+    display: flex;
+    height: 150px;
+    margin: 1em 0;
+    overflow: hidden;
+  }
+  .titleArticleRecent {
+    margin: 0;
+    color: #21314d;
+  }
+  .artcileRecentContainer > div > p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-weight: 300;
+  }
+  .artcileRecentContainer > img {
+    height: 150px;
+    width: 175px;
+    margin: 0 0.7em 0 0;
+  }
+  .containerEvent {
+    display: flex;
+    justify-content: space-between;
+  }
+  .eventContainer {
+    width: 15%;
+    justify-content: space-between;
+    text-decoration: none;
+    margin: 1em auto;
+  }
+  .eventContainer > h3 {
+    color: #21314d;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .eventContainer > p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-weight: 300;
+    font-size: 15px;
+    color: black;
+  }
+  .containerVideo {
+    display: flex;
+    justify-content: space-between;
+  }
+  .containerVideo > a {
+    width: 25%;
+    line-height: 100%;
+  }
+  .containerVideo > a > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Single Article */
+  .articleBlog {
+    width: 700px;
+    margin: auto;
+  }
+  .articleBlog > p {
+    text-align: justify;
+    font-size: 14px;
+    line-height: 1.6em;
+  }
+  .articleBlog > h1,
+  .articleBlog > h2 {
+    text-align: center;
+    color: #21314d;
+  }
+  .articleBlog > img,
+  .articleBlog > p > img {
+    text-align: center;
+    display: flex;
+    margin: 1em auto;
+  }
+  .articleBlog > img {
+    width: 700px;
+  }
+  .articleBlog > p > img {
+    width: 200px;
+  }
+  .timeline-Header-title {
+    display: none;
+  }
+</style>
+
+<body>
+  <div class="espaceBlog">
+    <img src="./hero.png" alt="" />
+    <!-- header-->
+
+    <ul class="menuEspaceBlogLi">
+      <li class="themeatiqueMenuLi" data-theme="Cloud">
+        <img src="./cloud.png" alt="" /> Cloud
+      </li>
+      <li class="themeatiqueMenuLi" data-theme="Sécurité">
+        <img src="./sécurité.png" alt="" /> Sécurité
+      </li>
+      <li class="themeatiqueMenuLi" data-theme="Data">
+        <img src="./iot.png" alt="" /> IoT/Data
+      </li>
+      <li class="themeatiqueMenuLi" data-theme="Software">
+        <img src="./software.png" alt="" /> Software
+      </li>
+      <li class="themeatiqueMenuLi" data-theme="Services">
+        <img src="./cloud.png" alt="" /> Services TD
+      </li>
+      <li class="themeatiqueMenuLi" data-theme="Education">
+        <img src="./sécurité.png" alt="" /> Education
+      </li>
+      <li class="themeatiqueMenuLi" data-theme="Workspace">
+        <img src="./workspace.png" alt="" /> Modern Workspace
+      </li>
+      <li class="themeatiqueMenuLi" data-theme="Hardware">
+        <img src="./workspace.png" alt="" />Hardware
+      </li>
+    </ul>
+
+    <div class="espaceBlogArticle"></div>
+    <div class="espaceEvent"></div>
+    <div class="espaceVideo"></div>
+    <div class="reseauxFeed"></div>
+    <div class="twitter feed"></div>
+    <article class="articleBlog"></article>
+  </div>
+</body>
+
+<script>
+  const url = "https://apitechdata.herokuapp.com/";
+
+  fetch(url + "articleBlog")
+    .then((reponse) => reponse.json())
+    .then(function (dataArticle) {
+      // Menu des themes
+      let theme;
+      document.querySelectorAll(".themeatiqueMenuLi").forEach((themeLi) => {
+        themeLi.addEventListener("click", () =>
+          chooseTheme(themeLi, dataArticle)
+        );
+      });
+
+      // Affiche les articles récents sur la page d'acceuil
+      displayArticleRecents(6, "all", dataArticle, "33%");
+
+      // Affichage des events
+      displayEvents(url);
+
+      // Affichage des Video Replay
+      displayVimeoFeed(url);
+
+      // Affichage Résaux feed
+      displayRéseauxFeed();
+    });
+
+  // Affichage des articles récents
+  function displayArticleRecents(
+    numberOfArticleToDisplay,
+    theme,
+    dataArticle,
+    sizeOfArticle
+  ) {
+    let titleArticleRecent = document.createElement("h2");
+    titleArticleRecent.innerHTML = "Articles Récents";
+    titleArticleRecent.classList.add("titleh2");
+
+    let articleRecentContainer = document.createElement("div");
+    articleRecentContainer.classList.add("articleRecentContainer");
+
+    document
+      .querySelector(".espaceBlogArticle")
+      .appendChild(titleArticleRecent);
+
+    document
+      .querySelector(".espaceBlogArticle")
+      .appendChild(articleRecentContainer);
+
+    let n = 0;
+    dataArticle.forEach((article) => {
+      if (article.theme == theme || theme == "all") {
+        if (n < numberOfArticleToDisplay) {
+          let divArticle = document.createElement("div");
+          let imageArticle = document.createElement("img");
+          let titleArticle = document.createElement("h3");
+          let chapo = document.createElement("p");
+          let textContainer = document.createElement("div");
+
+          divArticle.addEventListener("click", () => clickOnArticle(article));
+
+          titleArticle.innerHTML = article.titre;
+          imageArticle.src = article.mainImage;
+          chapo.innerHTML = article.chapo;
+
+          divArticle.style.width = sizeOfArticle;
+          divArticle.classList.add("artcileRecentContainer");
+
+          titleArticle.classList.add("titleArticleRecent");
+
+          textContainer.appendChild(titleArticle);
+          textContainer.appendChild(chapo);
+
+          divArticle.appendChild(imageArticle);
+          divArticle.appendChild(textContainer);
+
+          document
+            .querySelector(".articleRecentContainer")
+            .appendChild(divArticle);
+          n++;
+        }
+      }
+    });
+  }
+
+  // Affichage de la page thematique choisis
+  function chooseTheme(theme, dataArticle) {
+    theme = theme.dataset.theme;
+    let n = 0;
+
+    cleanUp();
+
+    displayArticleRecents(3, theme, dataArticle, "49%");
+    displayVimeoFeed(url);
+  }
+
+  // Nettoie le dom sur chaque changement themes ou articles
+  function cleanUp() {
+    document.querySelector(".espaceBlogArticle").innerHTML = "";
+    document.querySelector(".articleBlog").innerHTML = "";
+    document.querySelector(".espaceEvent").innerHTML = "";
+    document.querySelector(".espaceVideo").innerHTML = "";
+    document.querySelector(".reseauxFeed").innerHTML = "";
+  }
+
+  // Affiche l'article en entier
+  function clickOnArticle(article) {
+    cleanUp();
+
+    let titre = document.createElement("h1");
+    let paragraphe = document.createElement("p");
+    let chapo = document.createElement("h2");
+    let mainImage = document.createElement("img");
+
+    let para = article.paragraphe.replace(". ", ".<br/>");
+
+    titre.innerHTML = article.titre;
+    chapo.innerHTML = article.chapo;
+    mainImage.src = article.mainImage;
+    paragraphe.innerHTML = article.paragraphe
+      .replace(". ", ".<br/>")
+      .replace("? ", "? <br/>");
+
+    document.querySelector(".articleBlog").appendChild(titre);
+    document.querySelector(".articleBlog").appendChild(mainImage);
+    document.querySelector(".articleBlog").appendChild(chapo);
+    document.querySelector(".articleBlog").appendChild(paragraphe);
+  }
+
+  function isDateInFuture(date) {
+    now = new Date();
+    now.setDate(now.getDate() - 1);
+    return now < date;
+  }
+
+  // Affichage des prochains Event
+  function displayEvents(url) {
+    fetch(url + "event")
+      .then((reponse) => reponse.json())
+      .then(function (dataEvent) {
+        dataEvent.forEach((datas) => {
+          datas.date = new Date(datas.date);
+        });
+
+        let titleEvent = document.createElement("h2");
+        titleEvent.innerHTML = "Prochains events";
+        titleEvent.classList.add("titleh2");
+
+        document.querySelector(".espaceEvent").appendChild(titleEvent);
+
+        let containerEvent = document.createElement("div");
+        containerEvent.classList.add("containerEvent");
+
+        document.querySelector(".espaceEvent").appendChild(containerEvent);
+
+        const events = dataEvent.filter((event) => isDateInFuture(event.date));
+
+        for (let n = 0; n < 6; n++) {
+          let elem = events[n];
+
+          let container = document.createElement("a");
+          let mainImg = document.createElement("img");
+          let titleEvent = document.createElement("h3");
+          let description = document.createElement("p");
+
+          mainImg.src = elem.img;
+          mainImg.width = "200";
+          titleEvent.innerHTML = elem.title;
+          description.innerHTML = elem.DesciptionEvent;
+
+          container.classList.add("eventContainer");
+          container.href = elem.LinkEnSavoirPlus;
+          container.setAttribute("target", "_blank");
+
+          container.appendChild(mainImg);
+          container.appendChild(titleEvent);
+          container.appendChild(description);
+
+          document.querySelector(".containerEvent").appendChild(container);
+        }
+      });
+  }
+
+  function displayVimeoFeed(url) {
+    fetch(url + "video")
+      .then((reponse) => reponse.json())
+      .then(function (dataVideo) {
+        let titleVideo = document.createElement("h2");
+        titleVideo.innerHTML = "Vidéos ( replays...) ";
+        titleVideo.classList.add("titleh2");
+
+        document.querySelector(".espaceVideo").appendChild(titleVideo);
+
+        let containerVideo = document.createElement("div");
+        containerVideo.classList.add("containerVideo");
+
+        document.querySelector(".espaceVideo").appendChild(containerVideo);
+
+        for (let n = 0; n < 3; n++) {
+          let videoContainer = document.createElement("a");
+          let videoReplayImg = document.createElement("img");
+
+          videoReplayImg.src =
+            dataVideo[n]["media:content"][0]["media:thumbnail"][0].$.url;
+
+          videoContainer.href =
+            dataVideo[n]["media:content"][0]["media:player"][0].$.url;
+
+          videoContainer.setAttribute("target", "_blank");
+
+          videoContainer.appendChild(videoReplayImg);
+          containerVideo.appendChild(videoContainer);
+        }
+      });
+  }
+
+  function displayRéseauxFeed() {
+    let twitterFeed = document.createElement("a");
+    twitterFeed.href = "https://twitter.com/TechData_FR?ref_src=twsrc%5Etfw";
+    twitterFeed.classList.add("twitter-timeline");
+    twitterFeed.setAttribute("data-width", "500");
+    twitterFeed.setAttribute("data-height", "600");
+
+    let linkedinFeed = document.createElement("div");
+
+    let feedContainer = document.createElement("div");
+
+    let titleFeed = document.createElement("h2");
+    titleFeed.innerHTML = "Posts Linkedin / Twitter";
+    titleFeed.classList.add("titleh2");
+
+    feedContainer.appendChild(twitterFeed);
+    feedContainer.appendChild(linkedinFeed);
+
+    document.querySelector(".reseauxFeed").appendChild(titleFeed);
+    document.querySelector(".reseauxFeed").appendChild(feedContainer);
+  }
+</script>
+<script
+  async
+  src="https://platform.twitter.com/widgets.js"
+  charset="utf-8"
+></script>
