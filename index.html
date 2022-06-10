@@ -24,6 +24,7 @@
     display: flex;
     justify-content: space-between;
     padding: 0;
+    margin-bottom: 0;
   }
   .menuEspaceBlogLi > .themeatiqueMenuLi {
     font-size: 20px;
@@ -51,6 +52,7 @@
     height: 150px;
     margin: 1em 0;
     overflow: hidden;
+    cursor: pointer;
   }
   .titleArticleRecent {
     margin: 0;
@@ -99,6 +101,7 @@
   .containerVideo {
     display: flex;
     justify-content: space-between;
+    margin-top: 1em;
   }
   .containerVideo > a {
     width: 25%;
@@ -139,6 +142,9 @@
   }
   .timeline-Header-title {
     display: none;
+  }
+  .titleFeed {
+    margin-bottom: 1em;
   }
 </style>
 
@@ -407,12 +413,12 @@
     twitterFeed.setAttribute("data-height", "600");
 
     let linkedinFeed = document.createElement("div");
-
     let feedContainer = document.createElement("div");
 
     let titleFeed = document.createElement("h2");
     titleFeed.innerHTML = "Posts Linkedin / Twitter";
     titleFeed.classList.add("titleh2");
+    titleFeed.classList.add(".titleFeed");
 
     feedContainer.appendChild(twitterFeed);
     feedContainer.appendChild(linkedinFeed);
